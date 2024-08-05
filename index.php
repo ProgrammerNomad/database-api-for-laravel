@@ -10,8 +10,8 @@ if (file_exists($maintenance = '/var/www/vhosts/mobrilz.digital/data.mobrilz.dig
 }
 
 // Register the Composer autoloader...
-require __DIR__.'/var/www/vhosts/mobrilz.digital/data.mobrilz.digital/vendor/autoload.php';
+require '/var/www/vhosts/mobrilz.digital/data.mobrilz.digital/vendor/autoload.php';
 
 // Bootstrap Laravel and handle the request...
-(require_once __DIR__.'/var/www/vhosts/mobrilz.digital/data.mobrilz.digital/bootstrap/app.php')
+(require_once '/var/www/vhosts/mobrilz.digital/data.mobrilz.digital/bootstrap/app.php')
     ->handleRequest(Request::capture());
