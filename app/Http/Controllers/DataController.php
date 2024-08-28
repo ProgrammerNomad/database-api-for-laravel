@@ -11,7 +11,7 @@ class DataController extends Controller
     public function index()
     {
 
-        $Server = env('SERVER');
+       echo $Server = env('SERVER');
 
         $results = DB::table('technologies')
            // ->select('technology', 'offset') // Specify columns you want to retrieve
