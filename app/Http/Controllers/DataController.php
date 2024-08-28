@@ -11,7 +11,8 @@ class DataController extends Controller
     public function index()
     {
 
-       echo $Server = env('SERVER');
+       $Server = env('SERVER');
+       echo $BUILTWITH_API_KEY = env('BUILTWITH_API_KEY');
 
         $results = DB::table('technologies')
            // ->select('technology', 'offset') // Specify columns you want to retrieve
