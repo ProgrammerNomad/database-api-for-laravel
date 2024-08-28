@@ -41,7 +41,7 @@ class DataController extends Controller
             $xdata = $response->json(); // Decode JSON response
 
             // Now you can work with the $xdata array/object
-            // For example, access a specific field:
+
             $offset = $xdata['NextOffset'];
 
             // Or iterate over an array of results:
@@ -52,23 +52,23 @@ class DataController extends Controller
                 $domain = $result['D'];
 
                 $newData['domain'] = $result['D'];
-                $newData['Social'] = $result['D'];
-                $newData['CompanyName'] = $result['D'];
-                $newData['Telephones'] = $result['D'];
-                $newData['Emails'] = $result['D'];
-                $newData['Titles'] = $result['D'];
-                $newData['State'] = $result['D'];
-                $newData['Postcode'] = $result['D'];
-                $newData['Country'] = $result['D'];
-                $newData['Vertical'] = $result['D'];
+                $newData['Social'] = $result['META']['Social']; // JSON data
+                $newData['CompanyName'] = $result['META']['CompanyName'];
+                $newData['Telephones'] = $result['META']['Telephones']; // JSON data
+                $newData['Emails'] = $result['META']['Emails']; // JSON data
+                $newData['Titles'] = $result['META']['Titles']; // JSON data
+                $newData['State'] = $result['META']['State'];
+                $newData['Postcode'] = $result['META']['Postcode'];
+                $newData['Country'] = $result['META']['Country'];
+                $newData['Vertical'] = $result['META']['Vertical'];
 
 
 
                 // if domain exists then update else insert new row
-                echo '<pre>';
-                print_r($result);
-                echo '</pre>';
-                //$this->updateOrInsertData($domain, $result);
+                //echo '<pre>';
+                //print_r($result);
+                //echo '</pre>';
+                $this->updateOrInsertData($domain, $newData);
 
             }
         } else {
@@ -106,18 +106,30 @@ class DataController extends Controller
                     ->where('domain', $domain)
                     ->update([
                         'Social' => json_encode($mergedSocial),
+                        'CompanyName' => $newData['CompanyName'] ?? '',
                         'Telephones' => json_encode($mergedTelephones),
                         'Emails' => json_encode($mergedEmails),
-                        'Titles' => json_encode($mergedTitles)
+                        'Titles' => json_encode($mergedTitles),
+                        'State' => $newData['State'] ?? '',
+                        'Postcode' => $newData['Postcode'] ?? '',
+                        'Country' => $newData['Country'] ?? '',
+                        'Vertical' => $newData['Vertical'] ?? '',
+                        'updated_at' => now(),
                     ]);
             } else {
                 // Insert new record if it doesn't exist
                 DB::table('data')->insert([
                     'domain' => $domain,
                     'Social' => json_encode($newData['Social'] ?? []),
+                    'CompanyName' => $newData['CompanyName'] ?? '',
                     'Telephones' => json_encode($newData['Telephones'] ?? []),
                     'Emails' => json_encode($newData['Emails'] ?? []),
                     'Titles' => json_encode($newData['Titles'] ?? []),
+                    'State' => $newData['State'] ?? '',
+                    'Postcode' => $newData['Postcode'] ?? '',
+                    'Country' => $newData['Country'] ?? '',
+                    'Vertical' => $newData['Vertical'] ?? '',
+                    'created_at' => now(),
                 ]);
             }
         } else {
