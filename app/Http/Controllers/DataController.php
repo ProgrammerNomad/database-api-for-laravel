@@ -17,6 +17,7 @@ class DataController extends Controller
         $BUILTWITH_API_KEY = env('BUILTWITH_API_KEY');
 
         $results = DB::table('technologies')
+            ->select('technology', 'offset')
             ->where('status', '=', 0)
             ->where('server', '=', $Server)
             ->where('offset', '!=', 'END')
