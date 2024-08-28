@@ -44,7 +44,7 @@ class DataController extends Controller
             //$someValue = $xdata['some_field'];
 
             // Or iterate over an array of results:
-            foreach ($xdata['results']['Results'] as $result) {
+            foreach ($xdata['Results'] as $result) {
 
                 print_r($result);
 
