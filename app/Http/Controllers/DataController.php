@@ -103,10 +103,10 @@ class DataController extends Controller
                 $titlesData = json_decode($existingData->Titles, true) ?? [];
 
                 // Merge new data with existing data for each column
-                $mergedSocial = array_merge($socialData, $newData['Social'] ?? []);
-                $mergedTelephones = array_merge($telephonesData, $newData['Telephones'] ?? []);
-                $mergedEmails = array_merge($emailsData, $newData['Emails'] ?? []);
-                $mergedTitles = array_merge($titlesData, $newData['Titles'] ?? []);
+                $mergedSocial = array_unique(array_merge($socialData, $newData['Social'] ?? []));
+                $mergedTelephones = array_unique(array_merge($telephonesData, $newData['Telephones'] ?? []));
+                $mergedEmails = array_unique(array_merge($emailsData, $newData['Emails'] ?? []));
+                $mergedTitles = array_unique(array_merge($titlesData, $newData['Titles'] ?? []));
 
                 DB::table('data')
                     ->where('domain', $domain)
