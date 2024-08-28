@@ -85,12 +85,15 @@ class DataController extends Controller
             ]);
 
 
-        // After the loop or data processing is complete, create the index (if it doesn't exist)
-        Schema::table('data', function ($table) {
-            if (!Schema::hasIndex('data', 'domain_index')) {
-                $table->index('domain', 'domain_index');
+        // After the loop or data processing is complete:
+        if (Schema::hasColumn('data', 'domain')) {
+            if (!Schema::hasIndex('data', 'domain')) {
+                DB::statement('ALTER TABLE `data` ADD INDEX(`domain`)');
             }
-        });
+        } else {
+            // Handle case where the 'domain' column doesn't exist
+            \Log::error("Column 'domain' not found in table 'data'");
+        }
 
         return response()->json($results);
     }
