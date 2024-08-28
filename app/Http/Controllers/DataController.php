@@ -62,8 +62,6 @@ class DataController extends Controller
                 $newData['Country'] = $result['META']['Country'];
                 $newData['Vertical'] = $result['META']['Vertical'];
 
-
-
                 // if domain exists then update else insert new row
                 //echo '<pre>';
                 //print_r($result);
