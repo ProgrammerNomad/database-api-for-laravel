@@ -36,7 +36,13 @@ class DataController extends Controller
 
         }
 
-        $response = Http::get('https://api.builtwith.com/lists11/api.json?KEY=' . $BUILTWITH_API_KEY . '&TECH=' . $results->technology . '' . $Parameters);
+        $ApiUrl = 'https://api.builtwith.com/lists11/api.json?KEY=' . $BUILTWITH_API_KEY . '&TECH=' . $results->technology . '' . $Parameters;
+
+        echo $ApiUrl;
+
+        die();
+
+        $response = Http::get($ApiUrl);
 
         if ($response->successful()) {
             $xdata = $response->json(); // Decode JSON response
