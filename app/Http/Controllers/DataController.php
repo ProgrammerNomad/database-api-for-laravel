@@ -15,6 +15,7 @@ class DataController extends Controller
         $results = DB::table('technologies')
            // ->select('technology', 'offset') // Specify columns you want to retrieve
             ->where('status', '=', 0)
+            ->where('server', '=', 1)
             ->where('offset', '!=','END')
             //->orderBy('column_to_sort', 'asc') // Optional sorting
             ->first(); // Retrieve the results
