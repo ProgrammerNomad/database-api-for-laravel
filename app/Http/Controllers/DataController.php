@@ -17,7 +17,7 @@ class DataController extends Controller
         $BUILTWITH_API_KEY = env('BUILTWITH_API_KEY');
 
         $results = DB::table('technologies')
-            ->select('technology', 'offset')
+            ->select('id', 'technology', 'offset')
             ->where('status', '=', 0)
             ->where('server', '=', $Server)
             ->where('offset', '!=', 'END')
@@ -77,6 +77,12 @@ class DataController extends Controller
 
         // Save offset to database so that we can continue from where we stopped
 
+        DB::table('technologies')
+            ->where('id', $results->id)
+            ->update([
+                'offset' => $offset,
+                'updated_at' => now(),
+            ]);
 
         return response()->json($results);
     }
