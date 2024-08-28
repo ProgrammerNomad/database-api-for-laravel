@@ -3,7 +3,7 @@
 /public/build
 /public/hot
 
-
+.env
 /storage/*.key
 
 .env.backup
