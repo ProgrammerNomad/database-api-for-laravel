@@ -4,13 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\Data;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DataController extends Controller
 {
     public function index()
     {
-        $data = Data::all();
-        return response()->json($data);
+
+
+        $results = DB::table('technologies')
+            ->select('technology', 'technology') // Specify columns you want to retrieve
+            ->where('status', '=', 0)
+            ->where('offset', '!=','END')
+            //->orderBy('column_to_sort', 'asc') // Optional sorting
+            ->get(); // Retrieve the results
+
+       // $data = Data::all();
+        return response()->json($results);
     }
 
     public function store(Request $request)
