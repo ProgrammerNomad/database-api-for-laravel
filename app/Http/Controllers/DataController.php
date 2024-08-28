@@ -84,6 +84,14 @@ class DataController extends Controller
                 'updated_at' => now(),
             ]);
 
+
+        // After the loop or data processing is complete, create the index (if it doesn't exist)
+        Schema::table('data', function ($table) {
+            if (!Schema::hasIndex('data', 'domain_index')) {
+                $table->index('domain', 'domain_index');
+            }
+        });
+
         return response()->json($results);
     }
 
