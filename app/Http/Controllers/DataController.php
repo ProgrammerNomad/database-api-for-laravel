@@ -41,7 +41,7 @@ class DataController extends Controller
 
             // Now you can work with the $xdata array/object
             // For example, access a specific field:
-            $someValue = $xdata['some_field'];
+            //$someValue = $xdata['some_field'];
 
             // Or iterate over an array of results:
             foreach ($xdata['results']['Results'] as $result) {
