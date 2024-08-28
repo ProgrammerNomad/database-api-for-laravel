@@ -85,6 +85,7 @@ class DataController extends Controller
     {
         if (Schema::hasColumn('data', 'domain')) {
             $existingData = DB::table('data')
+                ->select('Social', 'Telephones', 'Emails', 'Titles')
                 ->where('domain', $domain)
                 ->first();
 
