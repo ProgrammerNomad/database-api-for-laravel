@@ -21,9 +21,20 @@ class DataController extends Controller
             ->where('offset', '!=', 'END')
             ->first();
 
+        $NotInArray = array('END', 0, null, '');
+
         // Now get data from builwith API
-die($results->technology);
-        $response = Http::get('https://api.builtwith.com/lists11/api.json?KEY=6aaa8a5d-a749-4643-833b-faeb235e05de&TECH=Joomla!&META=yes');
+        if (!in_array($results->offset, $NotInArray)) {
+
+            $Parameters = '&OFFSET=' . $results->offset;
+
+        } else {
+
+            $Parameters = '&META=yes';
+
+        }
+
+        $response = Http::get('https://api.builtwith.com/lists11/api.json?KEY=' . $BUILTWITH_API_KEY . '&TECH=' . $results->technology . '' . $Parameters);
 
         if ($response->successful()) {
             $xdata = $response->json(); // Decode JSON response
