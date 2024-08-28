@@ -17,7 +17,7 @@ class DataController extends Controller
             ->where('status', '=', 0)
             ->where('offset', '!=','END')
             //->orderBy('column_to_sort', 'asc') // Optional sorting
-            ->get(); // Retrieve the results
+            ->first(); // Retrieve the results
 
        // $data = Data::all();
         return response()->json($results);
