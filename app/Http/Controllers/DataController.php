@@ -38,9 +38,9 @@ class DataController extends Controller
 
         $ApiUrl = 'https://api.builtwith.com/lists11/api.json?KEY=' . $BUILTWITH_API_KEY . '&TECH=' . $results->technology . '' . $Parameters;
 
-        echo $ApiUrl;
+        //echo $ApiUrl;
 
-        die();
+        //die();
 
         $response = Http::get($ApiUrl);
 
@@ -59,15 +59,15 @@ class DataController extends Controller
                 $domain = $result['D'];
 
                 $newData['domain'] = $result['D'];
-                $newData['Social'] = $result['META']['Social']; // JSON data
-                $newData['CompanyName'] = $result['META']['CompanyName'];
-                $newData['Telephones'] = $result['META']['Telephones']; // JSON data
-                $newData['Emails'] = $result['META']['Emails']; // JSON data
-                $newData['Titles'] = $result['META']['Titles']; // JSON data
-                $newData['State'] = $result['META']['State'];
-                $newData['Postcode'] = $result['META']['Postcode'];
-                $newData['Country'] = $result['META']['Country'];
-                $newData['Vertical'] = $result['META']['Vertical'];
+                $newData['Social'] = $result['META']['Social'] ?? []; // JSON data
+                $newData['CompanyName'] = $result['META']['CompanyName'] ?? '';
+                $newData['Telephones'] = $result['META']['Telephones'] ?? []; // JSON data
+                $newData['Emails'] = $result['META']['Emails'] ?? []; // JSON data
+                $newData['Titles'] = $result['META']['Titles'] ?? []; // JSON data
+                $newData['State'] = $result['META']['State'] ?? '';
+                $newData['Postcode'] = $result['META']['Postcode'] ?? '';
+                $newData['Country'] = $result['META']['Country'] ?? '';
+                $newData['Vertical'] = $result['META']['Vertical'] ?? '';
 
                 // if domain exists then update else insert new row
                 //echo '<pre>';
