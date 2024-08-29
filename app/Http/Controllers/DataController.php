@@ -68,11 +68,14 @@ class DataController extends Controller
                 $newData['Postcode'] = $result['META']['Postcode'] ?? '';
                 $newData['Country'] = $result['META']['Country'] ?? '';
                 $newData['Vertical'] = $result['META']['Vertical'] ?? '';
+                $newData['Technologies'][] = $results->technology;
 
                 // if domain exists then update else insert new row
                 //echo '<pre>';
                 //print_r($result);
                 //echo '</pre>';
+
+                
                 $this->updateOrInsertData($domain, $newData);
 
             }
@@ -118,17 +121,20 @@ class DataController extends Controller
                 $telephonesData = json_decode($existingData->Telephones, true) ?? [];
                 $emailsData = json_decode($existingData->Emails, true) ?? [];
                 $titlesData = json_decode($existingData->Titles, true) ?? [];
+                $TechnologiesData = json_decode($existingData->Technologies, true) ?? [];
 
                 // Merge new data with existing data for each column
                 $mergedSocial = array_unique(array_merge($socialData, $newData['Social'] ?? []));
                 $mergedTelephones = array_unique(array_merge($telephonesData, $newData['Telephones'] ?? []));
                 $mergedEmails = array_unique(array_merge($emailsData, $newData['Emails'] ?? []));
                 $mergedTitles = array_unique(array_merge($titlesData, $newData['Titles'] ?? []));
+                $mergedTechnologies = array_unique(array_merge($TechnologiesData, $newData['Technologies'] ?? []));
 
                 DB::table('data')
                     ->where('domain', $domain)
                     ->update([
                         'Social' => json_encode($mergedSocial),
+                        'Technologies' => json_encode($mergedTechnologies),
                         'CompanyName' => $newData['CompanyName'] ?? '',
                         'Telephones' => json_encode($mergedTelephones),
                         'Emails' => json_encode($mergedEmails),
@@ -144,6 +150,7 @@ class DataController extends Controller
                 DB::table('data')->insert([
                     'domain' => $domain,
                     'Social' => json_encode($newData['Social'] ?? []),
+                    'Technologies' => json_encode($newData['Technologies'] ?? []),
                     'CompanyName' => $newData['CompanyName'] ?? '',
                     'Telephones' => json_encode($newData['Telephones'] ?? []),
                     'Emails' => json_encode($newData['Emails'] ?? []),
