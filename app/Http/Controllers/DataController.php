@@ -71,7 +71,7 @@ class DataController extends Controller
                 $newData['Technologies'][] = $results->technology;
 
                 // if domain exists then update else insert new row
-                
+
                 $this->updateOrInsertData($domain, $newData);
 
             }
@@ -107,7 +107,7 @@ class DataController extends Controller
     {
         if (Schema::hasColumn('data', 'domain')) {
             $existingData = DB::table('data')
-                ->select('Social', 'Telephones', 'Emails', 'Titles')
+                ->select('Social', 'Technologies', 'Telephones', 'Emails', 'Titles')
                 ->where('domain', $domain)
                 ->first();
 
