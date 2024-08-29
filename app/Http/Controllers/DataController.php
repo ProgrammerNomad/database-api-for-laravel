@@ -28,7 +28,7 @@ class DataController extends Controller
         // Now get data from builwith API
         if (!in_array($results->offset, $NotInArray)) {
 
-            $Parameters = '&OFFSET=' . $results->offset;
+            $Parameters = '&OFFSET=' . $results->offset . '&META=yes';
 
         } else {
 
