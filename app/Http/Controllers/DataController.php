@@ -71,10 +71,6 @@ class DataController extends Controller
                 $newData['Technologies'][] = $results->technology;
 
                 // if domain exists then update else insert new row
-                //echo '<pre>';
-                //print_r($result);
-                //echo '</pre>';
-
                 
                 $this->updateOrInsertData($domain, $newData);
 
