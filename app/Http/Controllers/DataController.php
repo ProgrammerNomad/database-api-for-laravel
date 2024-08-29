@@ -145,12 +145,12 @@ class DataController extends Controller
                 // Insert new record if it doesn't exist
                 DB::table('data')->insert([
                     'domain' => $domain,
-                    'Social' => json_encode($newData['Social'] ?? []),
-                    'Technologies' => json_encode($newData['Technologies'] ?? []),
+                    'Social' => json_encode(array_unique($newData['Social'] ?? [])),
+                    'Technologies' => json_encode(array_unique($newData['Technologies'] ?? [])),
                     'CompanyName' => $newData['CompanyName'] ?? '',
-                    'Telephones' => json_encode($newData['Telephones'] ?? []),
-                    'Emails' => json_encode($newData['Emails'] ?? []),
-                    'Titles' => json_encode($newData['Titles'] ?? []),
+                    'Telephones' => json_encode(array_unique($newData['Telephones'] ?? [])),
+                    'Emails' => json_encode(array_unique($newData['Emails'] ?? [])),
+                    'Titles' => json_encode(array_unique($newData['Titles'] ?? [])),
                     'State' => $newData['State'] ?? '',
                     'Postcode' => $newData['Postcode'] ?? '',
                     'Country' => $newData['Country'] ?? '',
