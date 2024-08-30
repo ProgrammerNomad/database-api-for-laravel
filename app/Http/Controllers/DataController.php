@@ -28,9 +28,7 @@ class DataController extends Controller
 
         $NotInArray = array('END', 0, null, '');
 
-        // Start Writer 
 
-        $writer = Writer::createFromPath(env('CSV_DIR') . '/' . $results->technology . '.csv', 'w+');
 
         // Now get data from builwith API
         if (!in_array($results->offset, $NotInArray)) {
@@ -43,7 +41,7 @@ class DataController extends Controller
 
             // Create header of CSV File
 
-
+            $writer = Writer::createFromPath(env('CSV_DIR') . '/' . $results->technology . '.csv', 'w+');
 
             $writer->insertOne(['domain', 'Social', 'CompanyName', 'Telephones', 'Emails', 'Titles', 'State', 'Postcode', 'Country', 'Vertical', 'Technologies']);
 
@@ -63,6 +61,8 @@ class DataController extends Controller
             // Now you can work with the $xdata array/object
 
             $offset = $xdata['NextOffset'];
+
+            $writer = Writer::createFromPath(env('CSV_DIR') . '/' . $results->technology . '.csv', 'a+');
 
             // Or iterate over an array of results:
             foreach ($xdata['Results'] as $result) {
