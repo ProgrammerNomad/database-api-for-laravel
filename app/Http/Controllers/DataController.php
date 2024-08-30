@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Http;
+use League\Csv\Reader;
+use League\Csv\Statement;
+use League\Csv\Writer;
 
 class DataController extends Controller
 {
@@ -33,6 +36,12 @@ class DataController extends Controller
         } else {
 
             $Parameters = '&META=yes';
+
+            // Create header of CSV File
+
+
+            $writer = Writer::createFromPath(env('CSV_DIR') . '/' . $results->technology . '.csv', 'w+');
+            $writer->insertOne(['domain', 'Social', 'CompanyName', 'Telephones', 'Emails', 'Titles', 'State', 'Postcode', 'Country', 'Vertical', 'Technologies']);
 
         }
 
@@ -68,11 +77,10 @@ class DataController extends Controller
                 $newData['Postcode'] = $result['META']['Postcode'] ?? '';
                 $newData['Country'] = $result['META']['Country'] ?? '';
                 $newData['Vertical'] = $result['META']['Vertical'] ?? '';
-                $newData['Technologies'][] = $results->technology;
+                $newData['Technologies'] = $results->technology;
 
-                // if domain exists then update else insert new row
+                //Save to CSV
 
-                $this->updateOrInsertData($domain, $newData);
 
             }
         } else {
@@ -89,81 +97,7 @@ class DataController extends Controller
                 'updated_at' => now(),
             ]);
 
-
-        // After the loop or data processing is complete:
-        if (Schema::hasColumn('data', 'domain')) {
-            if (!Schema::hasIndex('data', 'domain')) {
-                DB::statement('ALTER TABLE `data` ADD INDEX(`domain`)');
-            }
-        } else {
-            // Handle case where the 'domain' column doesn't exist
-            \Log::error("Column 'domain' not found in table 'data'");
-        }
-
         return response()->json($results);
-    }
-
-    public function updateOrInsertData($domain, $newData)
-    {
-        if (Schema::hasColumn('data', 'domain')) {
-            $existingData = DB::table('data')
-                ->select('Social', 'Technologies', 'Telephones', 'Emails', 'Titles')
-                ->where('domain', $domain)
-                ->first();
-
-            if ($existingData) {
-                // Decode JSON data from each column
-                $socialData = json_decode($existingData->Social, true) ?? [];
-                $telephonesData = json_decode($existingData->Telephones, true) ?? [];
-                $emailsData = json_decode($existingData->Emails, true) ?? [];
-                $titlesData = json_decode($existingData->Titles, true) ?? [];
-                $TechnologiesData = json_decode($existingData->Technologies, true) ?? [];
-
-                // Merge new data with existing data for each column
-                $mergedSocial = array_unique(array_merge($socialData, $newData['Social'] ?? []));
-                $mergedTelephones = array_unique(array_merge($telephonesData, $newData['Telephones'] ?? []));
-                $mergedEmails = array_unique(array_merge($emailsData, $newData['Emails'] ?? []));
-                $mergedTitles = array_unique(array_merge($titlesData, $newData['Titles'] ?? []));
-                $mergedTechnologies = array_unique(array_merge($TechnologiesData, $newData['Technologies'] ?? []));
-
-                DB::table('data')
-                    ->where('domain', $domain)
-                    ->update([
-                        'Social' => json_encode($mergedSocial),
-                        'Technologies' => json_encode($mergedTechnologies),
-                        'CompanyName' => $newData['CompanyName'] ?? '',
-                        'Telephones' => json_encode($mergedTelephones),
-                        'Emails' => json_encode($mergedEmails),
-                        'Titles' => json_encode($mergedTitles),
-                        'State' => $newData['State'] ?? '',
-                        'Postcode' => $newData['Postcode'] ?? '',
-                        'Country' => $newData['Country'] ?? '',
-                        'Vertical' => $newData['Vertical'] ?? '',
-                        'updated_at' => now(),
-                    ]);
-            } else {
-                // Insert new record if it doesn't exist
-                DB::table('data')->insert([
-                    'domain' => $domain,
-                    'Social' => json_encode(array_unique($newData['Social'] ?? [])),
-                    'Technologies' => json_encode(array_unique($newData['Technologies'] ?? [])),
-                    'CompanyName' => $newData['CompanyName'] ?? '',
-                    'Telephones' => json_encode(array_unique($newData['Telephones'] ?? [])),
-                    'Emails' => json_encode(array_unique($newData['Emails'] ?? [])),
-                    'Titles' => json_encode(array_unique($newData['Titles'] ?? [])),
-                    'State' => $newData['State'] ?? '',
-                    'Postcode' => $newData['Postcode'] ?? '',
-                    'Country' => $newData['Country'] ?? '',
-                    'Vertical' => $newData['Vertical'] ?? '',
-                    'created_at' => now(),
-                ]);
-            }
-        } else {
-            // Handle case where the 'domain' column doesn't exist
-            // You might want to log an error or create the column
-            // For example:
-            \Log::error("Column 'domain' not found in table 'data'");
-        }
     }
 
     public function store(Request $request)
