@@ -67,20 +67,20 @@ class DataController extends Controller
 
                 $domain = $result['D'];
 
-                $newData['domain'] = $result['D'];
-                $newData['Social'] = implode("|", $result['META']['Social'] ?? []); // JSON data
-                $newData['CompanyName'] = $result['META']['CompanyName'] ?? '';
-                $newData['Telephones'] = implode("|", $result['META']['Telephones'] ?? []); // JSON data
-                $newData['Emails'] = implode("|", $result['META']['Emails'] ?? []); // JSON data
-                $newData['Titles'] = implode("|", $result['META']['Titles'] ?? []); // JSON data
-                $newData['State'] = $result['META']['State'] ?? '';
-                $newData['Postcode'] = $result['META']['Postcode'] ?? '';
-                $newData['Country'] = $result['META']['Country'] ?? '';
-                $newData['Vertical'] = $result['META']['Vertical'] ?? '';
-                $newData['Technologies'] = $results->technology;
+                $newData[] = $result['D'];
+                $newData[] = implode("|", $result['META']['Social'] ?? []); // JSON data
+                $newData[] = $result['META']['CompanyName'] ?? '';
+                $newData[] = implode("|", $result['META']['Telephones'] ?? []); // JSON data
+                $newData[] = implode("|", $result['META']['Emails'] ?? []); // JSON data
+                $newData[] = implode("|", $result['META']['Titles'] ?? []); // JSON data
+                $newData[] = $result['META']['State'] ?? '';
+                $newData[] = $result['META']['Postcode'] ?? '';
+                $newData[] = $result['META']['Country'] ?? '';
+                $newData[] = $result['META']['Vertical'] ?? '';
+                $newData[] = $results->technology;
 
                 //Save to CSV
-
+                $writer->insertOne($newData);
 
             }
         } else {
