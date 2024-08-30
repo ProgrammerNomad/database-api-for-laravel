@@ -68,11 +68,11 @@ class DataController extends Controller
                 $domain = $result['D'];
 
                 $newData[] = $result['D'];
-                $newData[] = implode("|", $result['META']['Social'] ?? []); // JSON data
+                $newData[] = implode("|", array_unique($result['META']['Social'] ?? [])); // JSON data
                 $newData[] = $result['META']['CompanyName'] ?? '';
-                $newData[] = implode("|", $result['META']['Telephones'] ?? []); // JSON data
-                $newData[] = implode("|", $result['META']['Emails'] ?? []); // JSON data
-                $newData[] = implode("|", $result['META']['Titles'] ?? []); // JSON data
+                $newData[] = implode("|", array_unique($result['META']['Telephones'] ?? [])); // JSON data
+                $newData[] = implode("|", array_unique($result['META']['Emails'] ?? [])); // JSON data
+                $newData[] = implode("|", array_unique($result['META']['Titles'] ?? [])); // JSON data
                 $newData[] = $result['META']['State'] ?? '';
                 $newData[] = $result['META']['Postcode'] ?? '';
                 $newData[] = $result['META']['Country'] ?? '';
