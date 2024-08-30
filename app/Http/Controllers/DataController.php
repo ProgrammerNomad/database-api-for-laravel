@@ -68,7 +68,7 @@ class DataController extends Controller
                 $domain = $result['D'];
 
                 $newData['domain'] = $result['D'];
-                $newData['Social'] = $result['META']['Social'] ?? []; // JSON data
+                $newData['Social'] = implode("|", $result['META']['Social'] ?? []); // JSON data
                 $newData['CompanyName'] = $result['META']['CompanyName'] ?? '';
                 $newData['Telephones'] = $result['META']['Telephones'] ?? []; // JSON data
                 $newData['Emails'] = $result['META']['Emails'] ?? []; // JSON data
