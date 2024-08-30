@@ -49,7 +49,7 @@ class DataController extends Controller
 
         $ApiUrl = 'https://api.builtwith.com/lists11/api.json?KEY=' . $BUILTWITH_API_KEY . '&TECH=' . $results->technology . '' . $Parameters;
 
-        echo $ApiUrl;
+        echo $ApiUrl . "\n";
 
         //die();
 
