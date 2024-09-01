@@ -141,3 +141,4 @@ class DataController extends Controller
         return response()->json(null, 204);
     }
 }
+
