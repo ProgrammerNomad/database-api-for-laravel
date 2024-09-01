@@ -16,7 +16,9 @@ class DataController extends Controller
     public function index()
     {
 
-       echo $Server = env('SERVER');
+        $Server = env('SERVER');
+
+        echo $Server;
         $BUILTWITH_API_KEY = env('BUILTWITH_API_KEY');
 
         $results = DB::table('technologies')
